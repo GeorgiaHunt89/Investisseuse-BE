@@ -24,6 +24,11 @@ const userSchema = new Schema({
     required: true,
     minlength: 5,
   },
+  type: {
+    type: String,
+    enum: (Investor, Founder),
+    required: true,
+  },
 });
 
 // set up pre-save middleware to create password
