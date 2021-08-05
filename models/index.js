@@ -1,9 +1,11 @@
 const User = require("./User");
-const BusinessListing = require("./BusinessListing");
-const InvestmentOptions = require("./InvestmentOptions");
+const Business = require("./Business");
+const Investments = require("./Investments");
+const Category = require("./Category");
 
 module.exports = {
   User,
-  BusinessListing,
-  InvestmentOptions,
+  Business,
+  Investments,
+  Category,
 };
