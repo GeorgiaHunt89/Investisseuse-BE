@@ -19,6 +19,9 @@ const userSchema = new Schema({
     required: true,
     unique: true,
   },
+  company: {
+    type: String,
+  },
   password: {
     type: String,
     required: true,
@@ -26,7 +29,7 @@ const userSchema = new Schema({
   },
   role: {
     type: String,
-    enum: (Investor, Founder),
+    enum: ["investor", "founder"],
     required: true,
   },
 });
