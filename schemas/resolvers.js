@@ -1,5 +1,5 @@
 const { AuthenticationError } = require("apollo-server-express");
-const { User } = require("../models");
+const { User, Business, Investments } = require("../models");
 const { signToken } = require("../utils/auth");
 
 const resolvers = {
@@ -29,18 +29,59 @@ const resolvers = {
 
       throw new AuthenticationError("Not logged in");
     },
-    addBusiness: async (parent, { category }, context) => {
-      console.log(context);
+    addBusiness: async (parent, args, context) => {
+      console.log(context.user);
       if (context.user) {
-        const business = new Business({ category });
-
-        await User.findByIdAndUpdate(context.user._id, {
-          $push: { business: business },
+        const business = await Business.create({
+          ...args,
+          owner: context.user._id,
         });
 
-        return business;
+        const fullBusiness = await Business.findById(business._id).populate(
+          "owner"
+        );
+
+        return fullBusiness;
       }
 
+      throw new AuthenticationError("Not logged in");
+    },
+    updateBusiness: async (parent, args, context) => {
+      if (context.user) {
+        return await Business.findByIdAndUpdate(context.business._id, args, {
+          new: true,
+        });
+      }
+      throw new AuthenticationError("Not logged in");
+    },
+    addInvestments: async (parent, args, context) => {
+      console.log(context.user);
+      if (context.user) {
+        const investments = await Investments.create({
+          ...args,
+          investor: context.user._id,
+          business: context.business._id,
+        });
+
+        const fullInvestment = await Investments.findById(investments._id)
+          .populate("investor")
+          .populate("business");
+
+        return fullInvestment;
+      }
+
+      throw new AuthenticationError("Not logged in");
+    },
+    updateInvestments: async (parent, args, context) => {
+      if (context.user) {
+        return await Investments.findByIdAndUpdate(
+          context.investments._id,
+          args,
+          {
+            new: true,
+          }
+        );
+      }
       throw new AuthenticationError("Not logged in");
     },
     login: async (parent, { email, password }) => {
