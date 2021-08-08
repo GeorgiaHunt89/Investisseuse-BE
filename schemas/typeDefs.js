@@ -24,6 +24,7 @@ const typeDefs = gql`
   }
 
   type Business {
+    _id: ID
     companyName: String
     description: String
     website: String
@@ -31,7 +32,15 @@ const typeDefs = gql`
     sharePrice: Int
     shareQuantity: Int
     pitchDeck: String
-    category: Category
+    category: String
+    owner: User
+  }
+
+  type Investments {
+    _id: ID
+    investor: User
+    business: Business
+    shareNumber: Int
   }
 
   type Mutation {
@@ -57,8 +66,20 @@ const typeDefs = gql`
       sharePrice: Int
       shareQuantity: Int
       pitchDeck: String
-      category: Category
+      category: String
     ): Business
+    updateBusiness(
+      companyName: String
+      description: String
+      website: String
+      logo: String
+      sharePrice: Int
+      shareQuantity: Int
+      pitchDeck: String
+      category: String
+    ): Business
+    addInvestments(shareNumber: Int): Investments
+    updateInvestments(shareNumber: Int): Investments
     login(email: String!, password: String!): Auth
   }
 `;
