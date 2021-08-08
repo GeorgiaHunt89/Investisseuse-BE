@@ -12,7 +12,7 @@ const BusinessSchema = new Schema({
     required: true,
   },
   website: {
-    url: String,
+    type: String,
   },
   logo: {
     type: String,
@@ -30,12 +30,13 @@ const BusinessSchema = new Schema({
   pitchDeck: {
     type: String,
   },
-  category: [
-    {
-      type: Schema.Types.ObjectId,
-      ref: "Category",
-    },
-  ],
+  category: {
+    type: String,
+  },
+  owner: {
+    type: Schema.Types.ObjectId,
+    ref: "User",
+  },
 });
 
 const Business = mongoose.model("Business", BusinessSchema);
