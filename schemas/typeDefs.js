@@ -6,7 +6,7 @@ const typeDefs = gql`
     firstName: String
     lastName: String
     email: String
-    role: String
+    role: Boolean
   }
 
   type Auth {
@@ -56,7 +56,7 @@ const typeDefs = gql`
       lastName: String
       email: String
       password: String
-      role: String!
+      role: Boolean
     ): User
     addBusiness(
       companyName: String

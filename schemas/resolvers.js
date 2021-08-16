@@ -12,6 +12,13 @@ const resolvers = {
 
       throw new AuthenticationError("Not logged in");
     },
+    findUsers: async (parent, { search }, context) => {
+      const searchRegex = new RegExp(search, "i");
+      const users = await User.find({
+        $or: [{ firstName: searchRegex }, { lastName: searchRegex }],
+      });
+      return users;
+    },
   },
   Mutation: {
     addUser: async (parent, args) => {
@@ -56,17 +63,19 @@ const resolvers = {
     },
     addInvestments: async (parent, args, context) => {
       console.log(context.user);
+      console.log(args);
       if (context.user) {
+        const business = await Business.find({ owner: context.user._id });
+        console.log(business[0]);
         const investments = await Investments.create({
           ...args,
           investor: context.user._id,
-          business: context.business._id,
+          business: business.length > 0 ? business[0]._id : null,
         });
 
-        const fullInvestment = await Investments.findById(investments._id)
-          .populate("investor")
-          .populate("business");
-
+        const fullInvestment = await Investments.findById(
+          investments._id
+        ).populate(["investor", "business"]);
         return fullInvestment;
       }
 

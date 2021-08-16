@@ -28,9 +28,8 @@ const userSchema = new Schema({
     minlength: 5,
   },
   role: {
-    type: String,
-    enum: ["investor", "founder"],
-    required: true,
+    type: Boolean,
+    default: true,
   },
 });
 
