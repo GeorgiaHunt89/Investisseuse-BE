@@ -12,13 +12,6 @@ const resolvers = {
 
       throw new AuthenticationError("Not logged in");
     },
-    findUsers: async (parent, { search }, context) => {
-      const searchRegex = new RegExp(search, "i");
-      const users = await User.find({
-        $or: [{ firstName: searchRegex }, { lastName: searchRegex }],
-      });
-      return users;
-    },
   },
   Mutation: {
     addUser: async (parent, args) => {
